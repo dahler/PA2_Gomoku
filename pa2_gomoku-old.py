@@ -20,16 +20,6 @@ class Board:
         self.width = width
         self.slots = [[' ']*width for r in range(height)]
 
-
-    def getHeight(self):
-        return self.height
-
-    def getWidth(self):
-        return self.width
-
-    def getChecker(self, i, j):
-        return self.slots[i][j]
-
     def __repr__(self):
         """ Returns a string representation of a Board object.
         """
@@ -252,7 +242,7 @@ class Board:
 
 
 class Player:
-    def __init__(self, checker):
+    def __init__(self,checker):
         assert(checker == 'X' or checker == 'O')
         self.checker = checker
         self.num_moves = 0
@@ -304,7 +294,7 @@ class RandomPlayer(Player):
             for col in range(board.width):
                 if board.can_add_to(row, col):
                     open_pos.append((row, col))
-        
+        print(open_pos)
         return random.choice(open_pos)
     
 

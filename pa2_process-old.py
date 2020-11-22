@@ -11,7 +11,6 @@
 
 from pa2_gomoku import Board, Player, RandomPlayer
 from pa2 import *
-import time
 
 
 def process_move(player, board):
@@ -58,18 +57,14 @@ def gomoku(p1, p2):
     print(b)
     p1.num_moves = 0
     p2.num_moves = 0
-
-    time_to_move = [[], []]
     
     while True:
-        start = time.time()
         if process_move(p1, b) == True:
             return b
 
         if process_move(p2, b) == True:
             return b
-        t = time.time() - start
-        print("time needed: ", t)
 
-if __name__ == '__main__':
-    gomoku(RandomPlayer('X'), AIPlayer('O'))
+p1 = RandomPlayer('X')
+p2 = AIPlayer('O')
+gomoku(p1, p2)
