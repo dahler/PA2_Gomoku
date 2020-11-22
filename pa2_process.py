@@ -23,7 +23,9 @@ def process_move(player, board):
     """
     print(str(player) + "'s turn")
  
+    
     move = player.next_move(board)
+    
     
     board.add_checker(player.checker, move[0], move[1])
     print()
@@ -62,14 +64,15 @@ def gomoku(p1, p2):
     time_to_move = [[], []]
     
     while True:
-        start = time.time()
+     
         if process_move(p1, b) == True:
             return b
 
         if process_move(p2, b) == True:
             return b
-        t = time.time() - start
-        print("time needed: ", t)
+        
+        
 
 if __name__ == '__main__':
-    gomoku(RandomPlayer('X'), AIPlayer('O'))
+    for _ in range(2):
+        gomoku(AIPlayer('O'), RandomPlayer('X'))

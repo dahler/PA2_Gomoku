@@ -13,14 +13,14 @@
 
 import math
 from pa2_gomoku import Player
-
+import time
 
 
 class AIPlayer(Player):
     """ a subclass of Player that looks ahead some number of moves and 
     strategically determines its best next move.
     """
-    MAX_DEPTH = 3
+    MAX_DEPTH = 2
 
     def next_move(self, board):
         """ returns the called AIPlayer's next move for a game on
@@ -29,12 +29,19 @@ class AIPlayer(Player):
                      Player is playing.
             return: row, col are the coordinated of a vacant location on the board 
         """
+        
+
         bestScore = - math.inf
         matrix = self.toMatrix(board)
         squares = self.getSquaresToCheck(matrix)
         move = []
 
-        for [y, x] in squares:
+        if len(squares) == 0:
+            return[4,4]
+
+
+        start = time.time()        
+        for [y, x] in squares:     
             matrix[y][x] = -1
             score = self.alphaBeta(matrix, 0, -math.inf, math.inf, False)
             matrix[y][x] = 0
@@ -45,6 +52,13 @@ class AIPlayer(Player):
 
         self.num_moves += 1
         print(move)
+        print("number of squares, ",len(squares))
+        print(squares)
+        t = time.time() - start
+        if t >= 5 :
+           
+            
+            print("time needed: ", t)
 
         return move
 
@@ -59,6 +73,8 @@ class AIPlayer(Player):
 
 
     def alphaBeta(self, matrix, depth, alpha, beta, isAiTurn):
+
+        
 
         if depth >= self.MAX_DEPTH:
             staticEval = self.staticEval(matrix)
@@ -87,6 +103,8 @@ class AIPlayer(Player):
             # Prune if alpha is larger than beta. Because this path will definitely not selected by opponent.
             if alpha >= beta:
                 break
+
+      
 
         return best
 
@@ -142,7 +160,7 @@ class AIPlayer(Player):
 
     def horizontalScore(self, matrix):
         score = 0
-
+       
         for i in range(len(matrix)):
             current = 0
             streak = 0
@@ -159,11 +177,10 @@ class AIPlayer(Player):
 
     def verticalScore(self, matrix):
         score = 0
-
         for i in range(len(matrix[0])):
             current = 0
             streak = 0
-
+             
             for j in range(len(matrix)):
                 current, streak, score = self.scoreConsecutive(matrix[j][i], current, streak, score)
 
@@ -240,6 +257,8 @@ class AIPlayer(Player):
     # count: number in a row
     def adjacentBlockScore(self, count):
         scoreMatrix = [0, 2, 4, 8, 16, 32]
+        if count > 4:
+            print("count", count)
         return scoreMatrix[count]
 
     def checkWinner(self, matrix, checker, i, j):
